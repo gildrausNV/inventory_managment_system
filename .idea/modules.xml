@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/NikolaVujcic190062Client/NikolaVujcic190062Client.iml" filepath="$PROJECT_DIR$/NikolaVujcic190062Client/NikolaVujcic190062Client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NikolaVujcic190062Common/NikolaVujcic190062Common.iml" filepath="$PROJECT_DIR$/NikolaVujcic190062Common/NikolaVujcic190062Common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NikolaVujcic190062Server/NikolaVujcic190062Server.iml" filepath="$PROJECT_DIR$/NikolaVujcic190062Server/NikolaVujcic190062Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Nikolin konacan projekat.iml" filepath="$PROJECT_DIR$/.idea/Nikolin konacan projekat.iml" />
+    </modules>
+  </component>
+</project>
