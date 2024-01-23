@@ -35,19 +35,29 @@ public class SOUpdateOtpremnica extends AbstractSO{
         try {
             DBBroker.getInstance().update(ado);
             Otpremnica otpremnica = (Otpremnica) ado;
-            ArrayList<StavkeOtpremnice> stavkeSistem = otpremnica.getStavke();//STAVKE OTPREMNICE KOJE SU TRENUTNO U SISTEMU
-            
-            SOFilterStavke so = new SOFilterStavke((Object)otpremnica.getOtpremnicaID());
-            so.templateExecute(new StavkeOtpremnice());
-            ArrayList<StavkeOtpremnice> stavkeBaza = so.getLista();//STAVKE OTPREMNICE KOJE SU U BAZI
-            
-            for (StavkeOtpremnice sob : stavkeBaza) {
-                System.out.println(sob.getRB());
-                if(!stavkeSistem.contains(sob)) DBBroker.getInstance().delete(sob);//BRISANJE STAVKI KOJE SU IZBRISANE SA FORME
+            ArrayList<StavkeOtpremnice> stavkeSistem = otpremnica.getStavke();
+
+            ArrayList<AbstractDomainObject> stavkeAdo = DBBroker.getInstance().selectWhere(new StavkeOtpremnice(), String.valueOf((Object) otpremnica.getOtpremnicaID()));
+            ArrayList<StavkeOtpremnice> stavkeBaza = new ArrayList<>();
+            for (AbstractDomainObject abstractDomainObject : stavkeAdo) {
+                if (abstractDomainObject instanceof StavkeOtpremnice) {
+                    stavkeBaza.add((StavkeOtpremnice) abstractDomainObject);
+                }
             }
-            for (StavkeOtpremnice sos : stavkeSistem) {
-                if(!stavkeBaza.contains(sos)) DBBroker.getInstance().insert(sos);//DODAVANJE STAVKI KOJE NE POSTOJE U BAZI
-            }
+            
+            stavkeBaza.stream()
+                .filter(sob -> !stavkeSistem.contains(sob))
+                .forEach(sob -> DBBroker.getInstance().delete(sob));
+            
+            stavkeSistem.stream()
+                .filter(sos -> !stavkeBaza.contains(sos))
+                .forEach(sos -> {
+                try {
+                    DBBroker.getInstance().insert(sos);
+                } catch (SQLException ex) {
+                    Logger.getLogger(SOUpdateOtpremnica.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             uspesno = true;
         }
         catch (Exception ex) {

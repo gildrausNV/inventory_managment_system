@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,7 +17,8 @@ import java.util.logging.Logger;
  *
  * @author milos
  */
-public class StavkeOtpremnice extends AbstractDomainObject{
+public class StavkeOtpremnice extends AbstractDomainObject {
+
     private int RB;
     private String jedinicaMere;
     private int kolicina;
@@ -110,26 +112,27 @@ public class StavkeOtpremnice extends AbstractDomainObject{
 
     @Override
     public String primarniKljuc() {
-        return "RB= "+RB+", otpremnicaID= "+otpremnica.getOtpremnicaID();
+        return "RB= " + RB + ", otpremnicaID= " + otpremnica.getOtpremnicaID();
     }
 
     @Override
     public String vrednostiZaInsert() {
-        return otpremnica.getOtpremnicaID() + ", '"+jedinicaMere+"' , "+kolicina+ ", "+roba.getRobaID();
+        return otpremnica.getOtpremnicaID() + ", '" + jedinicaMere + "' , " + kolicina + ", " + roba.getRobaID();
     }
 
     @Override
     public String vrednostiZaUpdate() {
-        return "jedinicaMere= '" + jedinicaMere + "', kolicina="+kolicina+", robaID= "+roba.getRobaID();
+        return "jedinicaMere= '" + jedinicaMere + "', kolicina=" + kolicina + ", robaID= " + roba.getRobaID();
     }
+
     @Override
-    public String kolonaZaPretragu(){
+    public String kolonaZaPretragu() {
         return "otpremnicaID";
     }
 
     @Override
     public String id() {
-        return "RB= "+RB;
+        return "RB= " + RB;
     }
 
     @Override
@@ -147,9 +150,24 @@ public class StavkeOtpremnice extends AbstractDomainObject{
         return otpremnica.getID();
     }
 
-    
-    
-    
-    
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        StavkeOtpremnice other = (StavkeOtpremnice) obj;
+
+        return Objects.equals(this.RB, other.RB);
+    }
+
+    @Override
+    public int hashCode() {
+        // Your hash code generation logic based on the fields goes here
+        return Objects.hash(RB, jedinicaMere, kolicina, roba, otpremnica);
+    }
+
 }

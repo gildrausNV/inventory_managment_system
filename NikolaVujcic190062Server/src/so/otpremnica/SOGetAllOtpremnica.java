@@ -37,9 +37,16 @@ public class SOGetAllOtpremnica extends AbstractSO{
         for (AbstractDomainObject o : otpremnice) {
             try {
                 Otpremnica otpremnica = (Otpremnica) o;
-                SOFilterStavke so = new SOFilterStavke((Object)otpremnica.getOtpremnicaID());
-                so.templateExecute(new StavkeOtpremnice());
-                otpremnica.setStavke(so.getLista());
+
+                ArrayList<AbstractDomainObject> stavkeAdo = DBBroker.getInstance().selectWhere(new StavkeOtpremnice(), String.valueOf((Object) otpremnica.getOtpremnicaID()));
+                ArrayList<StavkeOtpremnice> stavkeBaza = new ArrayList<>();
+                for (AbstractDomainObject abstractDomainObject : stavkeAdo) {
+                    if (abstractDomainObject instanceof StavkeOtpremnice) {
+                        stavkeBaza.add((StavkeOtpremnice) abstractDomainObject);
+                    }
+                }
+                
+                otpremnica.setStavke(stavkeBaza);
                 o = otpremnica;
             } catch (Exception ex) {
                 Logger.getLogger(SOGetAllOtpremnica.class.getName()).log(Level.SEVERE, null, ex);
